@@ -4,7 +4,7 @@ let isTurnHappening = false;
 
 function chooseOpponentAttack () {
   // Put all opponents attacks in a array
-  const possibleAttacks = Object.values(opponentAttacks);
+  const possibleAttacks = Object.values(opponent.attacks);
 
   // Randomly chooses one attack from the array
   return possibleAttacks[Math.floor(Math.random() * possibleAttacks.length)];
@@ -16,11 +16,12 @@ function turn(playerChosenAttack) {
     return;
   }
   isTurnHappening = true;
-
-  const didPlayerHit = player.attack(playerChosenAttack, opponent);
+  let iscritical = isCritical();
+  let criticaltxt = iscritical ? ' and was CRITICAL!' : ' ';
+  const didPlayerHit = player.attack(playerChosenAttack, opponent, iscritical);
 
   // Update HTML text with the used attack
-  turnText.innerText = 'Player used ' + playerChosenAttack.name;
+  turnText.innerText = 'Player used ' + playerChosenAttack.name + criticaltxt;
 
   // Update HTML text in case the attack misses
   if (!didPlayerHit) {
@@ -30,7 +31,7 @@ function turn(playerChosenAttack) {
   // Wait 2000ms to execute opponent attack (Player attack animation time)
   setTimeout(() => {
     if (opponent.isParalised) {
-      turnText.innerText = 'Opponent is paralised!';
+      turnText.innerText = 'Opponent is paralyzed!';
       if (opponent.paralisedRounds == 1) {
         opponent.paralisedRounds = 0;
         opponent.isParalised = false;
@@ -39,12 +40,13 @@ function turn(playerChosenAttack) {
       }
     } else {
         // Randomly chooses opponents attack
+      let iscritical = isCritical();
       const opponentChosenAttack = chooseOpponentAttack();
-
-      const didOpponentHit = opponent.attack(opponentChosenAttack, player);
-
+      const didOpponentHit = opponent.attack(opponentChosenAttack, player, iscritical);
+      let criticaltxt = iscritical ? ' and was CRITICAL!' : ' ';
+      console.log(iscritical);
       // Update HTML text with the used attack
-      turnText.innerText = 'Opponent used ' + opponentChosenAttack.name;
+      turnText.innerText = 'Opponent used ' + opponentChosenAttack.name + criticaltxt;
 
       // Update HTML text in case the attack misses
       if (!didOpponentHit) {
@@ -62,15 +64,22 @@ function turn(playerChosenAttack) {
 }
 
 // Set buttons click interaction
-document.getElementById('thunder-shock-button').addEventListener('click', function() {
-  turn(player.attacks.thunderShock);
+document.getElementById('flashcannon-button').addEventListener('click', function() {
+  turn(player.attacks.flashCannon);
 });
-document.getElementById('quick-attack-button').addEventListener('click', function() {
-  turn(player.attacks.quickAttack);
+document.getElementById('metalclaw-button').addEventListener('click', function() {
+  turn(player.attacks.metalClaw);
 });
-document.getElementById('thunder-button').addEventListener('click', function() {
-  turn(player.attacks.thunder);
+document.getElementById('slash-button').addEventListener('click', function() {
+  turn(player.attacks.slash);
 });
-document.getElementById('submission-button').addEventListener('click', function() {
-  turn(player.attacks.submission);
+document.getElementById('irontail-button').addEventListener('click', function() {
+  turn(player.attacks.ironTail);
+});
+
+// start music
+window.addEventListener('load', function() {
+  let music = document.getElementById('music');
+  music.play();
+  music.volume = 0.6;
 });

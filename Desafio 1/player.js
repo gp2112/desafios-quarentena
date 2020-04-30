@@ -1,6 +1,6 @@
 class Player {
 
-  constructor(name, totalHp, type, elementId, attacks) {
+  constructor(name, totalHp, type, elementId, attacks, pokemon) {
     this._id = elementId;
     this._name = name;
     this._totalHp = totalHp;
@@ -9,6 +9,7 @@ class Player {
     this.paralisedRounds = 0;
     this.hp = totalHp;
     this._attacks = attacks;
+    this._pokemon = pokemon;
   }
 
   // Getters:
@@ -17,6 +18,7 @@ class Player {
   get type() {return this._type}
   get hpElement() {return document.getElementById(this._id)}
   get attacks() {return this._attacks}
+  get pokemon() {return this._pokemon}
   //////////////////////////////
 
   updateHp(newHp) {
@@ -25,7 +27,7 @@ class Player {
 
     // If player health is equal 0 opponent wins
     if (this.hp === 0) {
-      gameOver('Opponent');
+      gameOver(this);
     }
 
     // Update the player hp bar
@@ -33,19 +35,25 @@ class Player {
     this.hpElement.style.width = barWidth + '%';
   }
 
-  attack(attack, player2) {
+  attack(attack, player2, iscritical) {
     if (willAttackMiss(attack.accuracy)) {
       return false;
     }
+
+    let dammage = iscritical ? critical*attack.power : attack.power;
+
     if (attack.type == weakness[opponent.type]) {
-      player2.updateHp(player2.hp - attack.power*weaknessPenalty); 
+      dammage = dammage/weaknessPenalty; 
     } else {
-      player2.updateHp(player2.hp - attack.power);
+      player2.updateHp(player2.hp - dammage);
     }
 
     if (attack.especial != null) {
       attack.especial(player2);
     }
+    let sound = new Audio('assets/sounds/'+attack.sound);
+    sound.play();
+    flash(player2);
 
     return true;
   }
