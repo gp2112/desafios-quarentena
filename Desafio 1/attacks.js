@@ -11,7 +11,11 @@ const playerAttacks = {
     accuracy: 100,
     name: 'Thunder Shock',
     type: 'electric',
-    especial: function (opponent) {opponent.isParalised=true}
+    especial: function (opponent) { // 50% probability to get paralised
+          if (parseInt(Math.random()*10)%2) {
+            opponent.isParalised=true;
+          }
+        }
   },
   quickAttack: {
     power: 40,
