@@ -1,4 +1,4 @@
-You can try my version here: <a href="https://gp2112.github.io/pokemon/" target="_blank">gp2112.github.io/pokemon/</a> (please, verify if autoplay is authorized in your browser)
+You can try my version here: <a href="https://gp2112.github.io/pokemon/" target="_blank">gp2112.github.io/pokemon/</a> (please, verify if autoplay is allowed in your browser)
 
 # Desafio #1 - Arena de Batalha
 
